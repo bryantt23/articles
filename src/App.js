@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
 
 function App() {
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch('http://localhost:3001/articles');
+      const data = await res.json();
+      setArticles(data);
+    }
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <h1>Articles</h1>
+      {articles.length > 0 &&
+        articles.map(article => <p>{JSON.stringify(article)}</p>)}
     </div>
   );
 }
