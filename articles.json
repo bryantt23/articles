@@ -1,0 +1,22 @@
+{
+  "articles": [
+    {
+      "title": "the title",
+      "body": "blah blah",
+      "status": "present",
+      "category": "refunds"
+    },
+    {
+      "title": "the title2",
+      "body": "blah blah",
+      "status": "present",
+      "category": "account-info"
+    },
+    {
+      "title": "the title2",
+      "body": "blah blah",
+      "status": "past",
+      "category": "account-info"
+    }
+  ]
+}
