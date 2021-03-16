@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
 function App() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch('http://localhost:3001/articles');
-      const data = await res.json();
-      setArticles(data);
+      console.log('fetchData');
+      const response = await fetch('/api/articles');
+      console.log(response);
+      const body = await response.json();
+      console.log(body);
+      // const res = await axios.get('/articles');
+      // console.log(res);
+      // const res = await fetch('/articles');
+      // const data = await res.json();
+      setArticles(body);
     }
     fetchData();
   }, []);
