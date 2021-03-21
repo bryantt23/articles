@@ -16,4 +16,11 @@ router.get('/:articleId', (req, res) => {
     .catch(err => res.status(400).json(err));
 });
 
+router.post('/', (req, res) => {
+  console.log('article', req.body);
+  // Article.find({ _id: req.params.articleId })
+  //   .then(article => res.json(article))
+  //   .catch(err => res.status(400).json(err));
+});
+
 module.exports = router;
