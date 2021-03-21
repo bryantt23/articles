@@ -30,4 +30,19 @@ router.post('/', (req, res) => {
     });
 });
 
+// https://coursework.vschool.io/mongoose-crud/
+router.put('/:articleId', (req, res) => {
+  console.log('articleId', req.params, 'body', req.body);
+  Article.findByIdAndUpdate(
+    req.params.articleId,
+    req.body,
+    async (err, article) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      res.send(article);
+    }
+  );
+});
+
 module.exports = router;

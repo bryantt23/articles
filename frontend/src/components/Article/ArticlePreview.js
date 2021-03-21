@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 function ArticlePreview({ article }) {
   const text =
-    article.description.length <= 10
+    article.description.length <= 20
       ? article.description
-      : article.description.substring(0, 7) + '...';
+      : article.description.substring(0, 17) + '...';
   return (
     <div style={{ border: '1px solid' }}>
       <h3>Title: {article.title}</h3>
