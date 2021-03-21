@@ -8,18 +8,18 @@ function AddArticle() {
   }, []);
 
   const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [description, setDescription] = useState('');
   const [category, setCategory] = useState(Object.values(Category)[0]);
   const [status, setStatus] = useState(Object.values(Status)[0]);
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    axios.post('/api/articles/', { title, category, status, body });
+    axios.post('/api/articles/', { title, category, status, description });
     console.log(title);
     console.log(category);
     console.log(status);
-    console.log(body);
+    console.log(description);
   };
 
   return (
@@ -31,8 +31,8 @@ function AddArticle() {
         </label>
         <br />
         <label>
-          Body:
-          <input type='text' onChange={e => setBody(e.target.value)} />
+          Description:
+          <input type='text' onChange={e => setDescription(e.target.value)} />
         </label>
         <br />
         <label>

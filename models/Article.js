@@ -8,7 +8,7 @@ const ArticleSchema = new Schema({
     type: String,
     required: true
   },
-  body: {
+  description: {
     type: String,
     required: true,
     required: true
@@ -22,6 +22,10 @@ const ArticleSchema = new Schema({
     type: String,
     enum: Category,
     required: true
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 });
 
