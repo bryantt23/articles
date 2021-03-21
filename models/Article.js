@@ -18,6 +18,11 @@ const ArticleSchema = new Schema({
     enum: Status,
     required: true
   },
+  isDeleted: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   category: {
     type: String,
     enum: Category,
