@@ -8,24 +8,18 @@ function AddArticle() {
   }, []);
 
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState(null);
-  const [status, setStatus] = useState(null);
+  const [body, setBody] = useState('');
+  const [category, setCategory] = useState(Object.values(Category)[0]);
+  const [status, setStatus] = useState(Object.values(Status)[0]);
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    axios.post('/api/articles/', { title, category, status, body });
     console.log(title);
     console.log(category);
     console.log(status);
-  };
-
-  const handleChange = e => {
-    if (e.target.name === 'category') {
-      setCategory(e.target.value);
-    } else {
-      setStatus(e.target.value);
-    }
-    console.log(e);
+    console.log(body);
   };
 
   return (
@@ -37,24 +31,32 @@ function AddArticle() {
         </label>
         <br />
         <label>
-          Description:
-          <input type='text' onChange={e => setDescription(e.target.value)} />
+          Body:
+          <input type='text' onChange={e => setBody(e.target.value)} />
         </label>
         <br />
         <label>
           Select Category:
-          <select value={category} name='category' onChange={handleChange}>
+          <select
+            value={category}
+            name='category'
+            onChange={e => setCategory(e.target.value)}
+          >
             {Object.values(Category).map(key => (
               <option key={key} value={key}>
                 {key}
               </option>
             ))}
-          </select>{' '}
+          </select>
         </label>
         <br />
         <label>
           Select Status:
-          <select value={status} name='status' onChange={handleChange}>
+          <select
+            value={status}
+            name='status'
+            onChange={e => setStatus(e.target.value)}
+          >
             {Object.values(Status).map(key => (
               <option key={key} value={key}>
                 {key}

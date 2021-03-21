@@ -18,9 +18,16 @@ router.get('/:articleId', (req, res) => {
 
 router.post('/', (req, res) => {
   console.log('article', req.body);
-  // Article.find({ _id: req.params.articleId })
-  //   .then(article => res.json(article))
-  //   .catch(err => res.status(400).json(err));
+  const newArticle = new Article({
+    ...req.body
+  });
+
+  newArticle
+    .save()
+    .then(article => res.json(article))
+    .catch(e => {
+      return res.status(400).json(e);
+    });
 });
 
 module.exports = router;
