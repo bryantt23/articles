@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+// https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
 
 console.log(
   'This script populates articles to your database. Specified database as argument - e.g.: populatedb mongodb+srv://cooluser:coolpassword@cluster0.a9azn.mongodb.net/local_library?retryWrites=true'
@@ -65,6 +66,16 @@ function createArticles(cb) {
           Status.PAST,
           false,
           Category.ACCOUNT_INFO,
+          callback
+        );
+      },
+      function (callback) {
+        articleCreate(
+          'Deleted article',
+          'Deleted article description',
+          Status.FUTURE,
+          true,
+          Category.REFUNDS,
           callback
         );
       }

@@ -15,7 +15,7 @@ function Article() {
         console.log(response);
         const body = await response.data;
         console.log(body);
-        setArticle(body);
+        setArticle(body[0]);
       } catch (error) {
         console.log(error);
       }
@@ -26,12 +26,11 @@ function Article() {
   return (
     <div className='App'>
       <h1>Article</h1>
-      {JSON.stringify(article)}
-
-      {/* {article.length > 0 &&
-        article.map(article => (
-          <p key={article.id}>{JSON.stringify(article)}</p>
-        ))} */}
+      <p>Title: {article.title}</p>
+      <p>Description: {article.description}</p>
+      <p>Status: {article.status}</p>
+      <p>Category: {article.category}</p>
+      <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
     </div>
   );
 }
