@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Category, Status } from '../../src/models/Enums';
+import { Category, Status } from '../../models/Enums';
 
 function AddArticle() {
   useEffect(() => {

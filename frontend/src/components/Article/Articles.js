@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ArticlePreview from './ArticlePreview';
 
 function Articles() {
   const [articles, setArticles] = useState([]);
@@ -19,9 +20,7 @@ function Articles() {
     <div className='App'>
       <h1>Articles</h1>
       {articles.length > 0 &&
-        articles.map(article => (
-          <p key={article._id}>{JSON.stringify(article)}</p>
-        ))}
+        articles.map(article => <ArticlePreview article={article} />)}
     </div>
   );
 }

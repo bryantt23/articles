@@ -1,7 +1,7 @@
 import React from 'react';
-import Articles from './components/Articles';
-import Article from './components/Article';
-import AddArticle from './components/AddArticle';
+import Articles from './components/Article/Articles';
+import Article from './components/Article/Article';
+import AddArticle from './components/Article/AddArticle';
 
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
