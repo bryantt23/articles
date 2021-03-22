@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function ArticlePreview({ article }) {
+  if (!article || !article.description) {
+    return '';
+  }
   const text =
     article.description.length <= 20
       ? article.description
@@ -13,9 +16,9 @@ function ArticlePreview({ article }) {
       <p>Description: {text}</p>
       <p>Category: {article.category}</p>
       <p>Status: {article.status}</p>
-      <Link to={`/articles/${article._id}`} activeClassName='active'>
+      <NavLink to={`/articles/${article._id}`} activeClassName='active'>
         Go to article
-      </Link>
+      </NavLink>
     </div>
   );
 }
