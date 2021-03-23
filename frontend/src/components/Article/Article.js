@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function Article() {
   const [article, setArticle] = useState([]);
@@ -32,9 +32,9 @@ function Article() {
       <p>Status: {article.status}</p>
       <p>Category: {article.category}</p>
       <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
-      <Link to={`/edit-article/${article._id}`} activeClassName='active'>
+      <NavLink to={`/edit-article/${article._id}`} activeClassName='active'>
         Edit article
-      </Link>
+      </NavLink>
     </div>
   );
 }

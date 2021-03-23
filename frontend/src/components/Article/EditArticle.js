@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Category, Status } from '../../models/Enums';
+import { notificationUpdateArticle } from '../../reducers/notifications_reducer';
+import { connect } from 'react-redux';
 
-function EditArticle() {
+function EditArticle(props) {
   let { id } = useParams();
 
   const [title, setTitle] = useState('');
@@ -30,20 +32,29 @@ function EditArticle() {
     fetchData();
   }, []);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
-    axios.put(`/api/articles/${id}`, {
-      title,
-      description,
-      category,
-      status,
-      isDeleted
-    });
-    console.log(title);
-    console.log(category);
-    console.log(status);
-    console.log(description);
+    try {
+      await axios.put(`/api/articles/${id}`, {
+        title,
+        description,
+        category,
+        status,
+        isDeleted
+      });
+      await props.notificationUpdateArticle(
+        `Title: ${title}, 
+      Description: ${description}, 
+      Category: ${category},
+      Status: ${status},
+      isDeleted: ${isDeleted}`,
+        10
+      );
+      props.history.push('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -55,7 +66,7 @@ function EditArticle() {
             Title:
             <input
               type='text'
-              value={title}
+              value={title || ''}
               onChange={e => setTitle(e.target.value)}
             />
           </label>
@@ -63,7 +74,7 @@ function EditArticle() {
           <label>
             Description:
             <textarea
-              value={description}
+              value={description || ''}
               onChange={e => setDescription(e.target.value)}
             />
           </label>
@@ -71,7 +82,7 @@ function EditArticle() {
           <label>
             Select Status:
             <select
-              value={status}
+              value={status || ''}
               name='status'
               onChange={e => setStatus(e.target.value)}
             >
@@ -80,13 +91,13 @@ function EditArticle() {
                   {key}
                 </option>
               ))}
-            </select>{' '}
+            </select>
           </label>
           <br />
           <label>
             Select Category:
             <select
-              value={category}
+              value={category || ''}
               name='category'
               onChange={e => setCategory(e.target.value)}
             >
@@ -117,4 +128,8 @@ function EditArticle() {
   );
 }
 
-export default EditArticle;
+const mapDispatchToProps = { notificationUpdateArticle };
+
+const ConnectedEditArticle = connect(null, mapDispatchToProps)(EditArticle);
+
+export default ConnectedEditArticle;
