@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Category, Status } from '../../models/Enums';
 import { notificationArticle } from '../../reducers/notifications_reducer';
 import { connect } from 'react-redux';
+import { addArticle } from '../../util/article_api_util';
 
 function AddArticle(props) {
   const [title, setTitle] = useState('');
@@ -14,11 +15,12 @@ function AddArticle(props) {
     e.preventDefault();
 
     try {
-      axios.post('/api/articles/', { title, category, status, description });
+      await addArticle({ title, category, status, description });
       console.log(title);
       console.log(category);
       console.log(status);
       console.log(description);
+
       await props.notificationArticle(
         `You updated a new article with content of:
         Title: ${title}, 
