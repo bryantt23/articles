@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Category, Status } from '../../models/Enums';
+import { notificationArticle } from '../../reducers/notifications_reducer';
+import { connect } from 'react-redux';
 
-function AddArticle() {
-  useEffect(() => {
-    // console.log(Object.values(Category));
-  }, []);
-
+function AddArticle(props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState(Object.values(Category)[0]);
   const [status, setStatus] = useState(Object.values(Status)[0]);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
-    axios.post('/api/articles/', { title, category, status, description });
-    console.log(title);
-    console.log(category);
-    console.log(status);
-    console.log(description);
+    try {
+      axios.post('/api/articles/', { title, category, status, description });
+      console.log(title);
+      console.log(category);
+      console.log(status);
+      console.log(description);
+      await props.notificationArticle(
+        `You updated a new article with content of:
+        Title: ${title}, 
+      Description: ${description}, 
+      Category: ${category},
+      Status: ${status}`,
+        10
+      );
+      props.history.push('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -71,4 +82,8 @@ function AddArticle() {
   );
 }
 
-export default AddArticle;
+const mapDispatchToProps = { notificationArticle };
+
+const ConnectedAddArticle = connect(null, mapDispatchToProps)(AddArticle);
+
+export default ConnectedAddArticle;
