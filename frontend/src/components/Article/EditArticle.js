@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Category, Status } from '../../models/Enums';
-import { notificationUpdateArticle } from '../../reducers/notifications_reducer';
+import { notificationArticle } from '../../reducers/notifications_reducer';
 import { connect } from 'react-redux';
 
 function EditArticle(props) {
@@ -43,8 +43,9 @@ function EditArticle(props) {
         status,
         isDeleted
       });
-      await props.notificationUpdateArticle(
-        `Title: ${title}, 
+      await props.notificationArticle(
+        `You updated the article to:
+        Title: ${title}, 
       Description: ${description}, 
       Category: ${category},
       Status: ${status},
@@ -128,7 +129,7 @@ function EditArticle(props) {
   );
 }
 
-const mapDispatchToProps = { notificationUpdateArticle };
+const mapDispatchToProps = { notificationArticle };
 
 const ConnectedEditArticle = connect(null, mapDispatchToProps)(EditArticle);
 

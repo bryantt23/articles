@@ -4,10 +4,10 @@
 const initialState = { show: false, message: '' };
 
 let timeoutId;
-export const notificationUpdateArticle = (content, timeout) => {
+export const notificationArticle = (content, timeout) => {
   return async dispatch => {
     dispatch({
-      type: 'NOTIFICATION_UPDATE_ARTICLE',
+      type: 'NOTIFICATION_ARTICLE',
       payload: content
     });
     if (timeoutId) {
@@ -26,12 +26,9 @@ export const notificationHide = () => {
 };
 
 const notificationReducer = (state = initialState, action) => {
-  let content, message;
-
   switch (action.type) {
-    case 'NOTIFICATION_UPDATE_ARTICLE':
-      content = action.payload;
-      message = `You updated article to ${content}`;
+    case 'NOTIFICATION_ARTICLE':
+      const message = action.payload;
       return { ...state, show: true, message };
     case 'HIDE_NOTIFICATION':
       return { ...state, message: '', show: false };
