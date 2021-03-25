@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { NavLink } from 'react-router-dom';
+import { getArticle } from '../../util/article_api_util';
 
 function Article() {
   const [article, setArticle] = useState(null);
@@ -11,12 +12,9 @@ function Article() {
     console.log(id);
     async function fetchData() {
       try {
-        console.log('fetchData');
-        const response = await axios.get(`/api/articles/${id}`);
-        console.log(response);
-        const body = await response.data;
-        console.log(body);
-        setArticle(body[0]);
+        const article = await getArticle(id);
+        console.log(article);
+        setArticle(article);
       } catch (error) {
         console.log(error);
       }
