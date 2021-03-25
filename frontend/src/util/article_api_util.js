@@ -1,13 +1,14 @@
 import axios from 'axios';
+const baseUrl = '/api/articles';
 
 export const getArticles = async () => {
-  const response = await fetch('/api/articles');
+  const response = await fetch(baseUrl);
   const body = await response.json();
   return body;
 };
 
 export const getArticle = async id => {
-  const response = await axios.get(`/api/articles/${id}`);
+  const response = await axios.get(baseUrl + '/' + id);
   console.log(response);
   const body = await response.data;
   console.log(body);
@@ -15,7 +16,7 @@ export const getArticle = async id => {
 };
 
 export const addArticle = async ({ title, category, status, description }) => {
-  return axios.post('/api/articles/', {
+  return axios.post(baseUrl, {
     title,
     category,
     status,
