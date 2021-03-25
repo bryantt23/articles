@@ -4,7 +4,7 @@ import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 
 function Article() {
-  const [article, setArticle] = useState([]);
+  const [article, setArticle] = useState(null);
   let { id } = useParams();
 
   useEffect(() => {
@@ -26,15 +26,21 @@ function Article() {
 
   return (
     <div className='App'>
-      <h1>Article</h1>
-      <p>Title: {article.title}</p>
-      <p>Description: {article.description}</p>
-      <p>Status: {article.status}</p>
-      <p>Category: {article.category}</p>
-      <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
-      <NavLink to={`/edit-article/${article._id}`} activeClassName='active'>
-        Edit article
-      </NavLink>
+      {!article ? (
+        `There is no article with id ${id}`
+      ) : (
+        <div>
+          <h1>Article</h1>
+          <p>Title: {article.title}</p>
+          <p>Description: {article.description}</p>
+          <p>Status: {article.status}</p>
+          <p>Category: {article.category}</p>
+          <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
+          <NavLink to={`/edit-article/${article._id}`} activeClassName='active'>
+            Edit article
+          </NavLink>
+        </div>
+      )}
     </div>
   );
 }
