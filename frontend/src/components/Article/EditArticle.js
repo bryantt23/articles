@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Category, Status } from '../../models/Enums';
 import { notificationArticle } from '../../reducers/notifications_reducer';
 import { connect } from 'react-redux';
+import { getArticle, editArticle } from '../../util/article_api_util';
 
 function EditArticle(props) {
   let { id } = useParams();
@@ -17,8 +18,7 @@ function EditArticle(props) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(`/api/articles/${id}`);
-        const article = await response.data[0];
+        const article = await getArticle(id);
         const { title, description, category, status, isDeleted } = article;
         setTitle(title);
         setDescription(description);
@@ -36,7 +36,8 @@ function EditArticle(props) {
     e.preventDefault();
 
     try {
-      await axios.put(`/api/articles/${id}`, {
+      await editArticle({
+        id,
         title,
         description,
         category,
@@ -46,10 +47,10 @@ function EditArticle(props) {
       await props.notificationArticle(
         `You updated the article to:
         Title: ${title}, 
-      Description: ${description}, 
-      Category: ${category},
-      Status: ${status},
-      isDeleted: ${isDeleted}`,
+        Description: ${description}, 
+        Category: ${category},
+        Status: ${status},
+        isDeleted: ${isDeleted}`,
         10
       );
       props.history.push('/');

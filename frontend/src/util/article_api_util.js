@@ -23,3 +23,20 @@ export const addArticle = async ({ title, category, status, description }) => {
     description
   });
 };
+
+export const editArticle = async ({
+  title,
+  category,
+  status,
+  description,
+  isDeleted,
+  id
+}) => {
+  return axios.put(baseUrl + '/' + id, {
+    title,
+    category,
+    status,
+    description,
+    isDeleted
+  });
+};
