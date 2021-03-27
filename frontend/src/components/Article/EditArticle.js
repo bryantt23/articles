@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Category, Status } from '../../models/Enums';
-import { notificationArticle } from '../../reducers/notifications_reducer';
+import { notificationArticle } from '../../actions/notification_actions';
 import { connect } from 'react-redux';
 import { getArticle, editArticle } from '../../util/article_api_util';
 
