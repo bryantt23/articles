@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { Category, Status } from '../../models/Enums';
-import { notificationArticle } from '../../actions/notification_actions';
+import {
+  notificationArticle,
+  notificationError
+} from '../../actions/notification_actions';
 import { connect } from 'react-redux';
 import { getArticle, editArticle } from '../../util/article_api_util';
 
@@ -56,6 +58,7 @@ function EditArticle(props) {
       props.history.push('/');
     } catch (error) {
       console.log(error);
+      props.notificationError(error.message + error.response.data, 10);
     }
   };
 
@@ -130,7 +133,7 @@ function EditArticle(props) {
   );
 }
 
-const mapDispatchToProps = { notificationArticle };
+const mapDispatchToProps = { notificationArticle, notificationError };
 
 const ConnectedEditArticle = connect(null, mapDispatchToProps)(EditArticle);
 

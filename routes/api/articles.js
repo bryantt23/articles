@@ -33,16 +33,36 @@ router.post('/', (req, res) => {
 // https://coursework.vschool.io/mongoose-crud/
 router.put('/:articleId', (req, res) => {
   console.log('articleId', req.params, 'body', req.body);
-  Article.findByIdAndUpdate(
-    req.params.articleId,
-    req.body,
-    async (err, article) => {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      res.send(article);
+  Article.findOne({ _id: req.params.articleId }, (err, article) => {
+    console.log('article', article);
+    console.log('req.body', req.body);
+    // article = { ...article, ...req.body };
+
+    for (let key in req.body) {
+      let val = req.body[key];
+      article[key] = val;
     }
-  );
+    console.log('article', article);
+
+    // console.log('updated', updatedArticle);
+    article.save((saveErr, savedArticle) => {
+      if (saveErr) {
+        console.log('saveErr', saveErr);
+        return res.status(500).send(saveErr.message);
+        // throw saveErr;
+      }
+      // console.log(savedArticle);
+      res.send(article);
+    });
+
+    // req.body,
+    //   async (err, article) => {
+    //     if (err) {
+    //       return res.status(500).send(err);
+    //     }
+    //     res.send(article);
+    //   };
+  });
 });
 
 module.exports = router;
