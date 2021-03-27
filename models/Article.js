@@ -6,11 +6,12 @@ const { Category, Status } = require('./Enums');
 const ArticleSchema = new Schema({
   title: {
     type: String,
+    minLength: 1,
     required: true
   },
   description: {
     type: String,
-    required: true,
+    minLength: 1,
     required: true
   },
   status: {

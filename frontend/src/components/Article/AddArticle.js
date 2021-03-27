@@ -33,8 +33,6 @@ function AddArticle(props) {
       );
       props.history.push('/');
     } catch (error) {
-      console.log(error.response.data);
-      // console.log(JSON.stringify(error));
       props.notificationError(error.message + error.response.data, 10);
     }
   };
