@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const Article = require('../../models/Article');
 
 router.get('/', async (req, res) => {
@@ -36,32 +35,20 @@ router.put('/:articleId', (req, res) => {
   Article.findOne({ _id: req.params.articleId }, (err, article) => {
     console.log('article', article);
     console.log('req.body', req.body);
-    // article = { ...article, ...req.body };
 
     for (let key in req.body) {
       let val = req.body[key];
       article[key] = val;
     }
     console.log('article', article);
-
-    // console.log('updated', updatedArticle);
-    article.save((saveErr, savedArticle) => {
+    // https://stackoverflow.com/questions/7267102/how-do-i-update-upsert-a-document-in-mongoose
+    article.save(saveErr => {
       if (saveErr) {
         console.log('saveErr', saveErr);
         return res.status(500).send(saveErr.message);
-        // throw saveErr;
       }
-      // console.log(savedArticle);
       res.send(article);
     });
-
-    // req.body,
-    //   async (err, article) => {
-    //     if (err) {
-    //       return res.status(500).send(err);
-    //     }
-    //     res.send(article);
-    //   };
   });
 });
 
