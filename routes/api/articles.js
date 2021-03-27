@@ -26,7 +26,9 @@ router.post('/', (req, res) => {
     .save()
     .then(article => res.json(article))
     .catch(e => {
-      return res.status(400).json(e);
+      console.log('err m', JSON.stringify(e));
+      // let str=
+      return res.status(400).json(e.message);
     });
 });
 

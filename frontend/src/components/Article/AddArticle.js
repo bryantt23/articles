@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Category, Status } from '../../models/Enums';
-import { notificationArticle } from '../../actions/notification_actions';
+import {
+  notificationArticle,
+  notificationError
+} from '../../actions/notification_actions';
 import { connect } from 'react-redux';
 import { addArticle } from '../../util/article_api_util';
 
@@ -30,7 +33,9 @@ function AddArticle(props) {
       );
       props.history.push('/');
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      // console.log(JSON.stringify(error));
+      props.notificationError(error.message + error.response.data, 10);
     }
   };
 
@@ -83,7 +88,7 @@ function AddArticle(props) {
   );
 }
 
-const mapDispatchToProps = { notificationArticle };
+const mapDispatchToProps = { notificationArticle, notificationError };
 
 const ConnectedAddArticle = connect(null, mapDispatchToProps)(AddArticle);
 
