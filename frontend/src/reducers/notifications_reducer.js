@@ -12,7 +12,7 @@ const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
     case NOTIFICATION_ARTICLE:
       const message = action.payload;
-      return { ...state, show: true, message };
+      return { ...state, show: true, message, borderColor: 'green' };
     case HIDE_NOTIFICATION:
       return { ...state, message: '', show: false };
     default:
