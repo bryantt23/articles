@@ -15,7 +15,7 @@ if (!userArgs[0].startsWith('mongodb')) {
 */
 var async = require('async');
 const Article = require('./models/Article');
-const { Status, Category } = require('./models/Enums');
+const { Status, Category } = require('./frontend/src/constants/Enums');
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];

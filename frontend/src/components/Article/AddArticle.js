@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Category, Status } from '../../models/Enums';
+import { Category, Status } from '../../constants/Enums';
 import {
   notificationArticle,
   notificationError

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Category, Status } from '../../models/Enums';
+import { Category, Status } from '../../constants/Enums';
 import {
   notificationArticle,
   notificationError
