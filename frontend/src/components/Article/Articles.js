@@ -16,32 +16,24 @@ function Articles(props) {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   console.log('hi', selectedCategory);
-  // }, [selectedCategory]);
-
   const createDropdown = (arr, onChangeFunction) => {
     let arrUpdated = Object.values(arr).map(val => val);
     arrUpdated.unshift('Any');
     return (
       <select onChange={e => onChangeFunction(e.target.value)}>
-        {arrUpdated.map((key, val) => {
+        {arrUpdated.map(key => {
           return <option>{key}</option>;
         })}
       </select>
     );
   };
 
-  console.log(Category);
-  console.log(articles);
   let articlesFiltered = articles;
-  console.log(selectedCategory);
   if (selectedCategory !== 'Any') {
     articlesFiltered = articles.filter(
       article => article.category === selectedCategory
     );
   }
-  console.log('articlesFiltered', articlesFiltered);
 
   return (
     <div className='App'>
