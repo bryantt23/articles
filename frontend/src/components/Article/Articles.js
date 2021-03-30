@@ -7,6 +7,7 @@ import { Category, Status } from '../../constants/Enums';
 function Articles(props) {
   const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('Any');
+  const [selectedStatus, setSelectedStatus] = useState('Any');
 
   useEffect(() => {
     async function fetchData() {
@@ -34,6 +35,12 @@ function Articles(props) {
       article => article.category === selectedCategory
     );
   }
+  if (selectedStatus !== 'Any') {
+    articlesFiltered = articlesFiltered.filter(
+      article => article.status === selectedStatus
+    );
+  }
+  console.log(articlesFiltered);
 
   return (
     <div className='App'>
@@ -41,6 +48,9 @@ function Articles(props) {
 
       <p>Show only articles with Category:</p>
       {createDropdown(Category, setSelectedCategory)}
+
+      <p>Show only articles with Status:</p>
+      {createDropdown(Status, setSelectedStatus)}
 
       {articlesFiltered.length === 0
         ? 'There are no articles'
