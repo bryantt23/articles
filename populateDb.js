@@ -15,7 +15,9 @@ if (!userArgs[0].startsWith('mongodb')) {
 */
 var async = require('async');
 const Article = require('./models/Article');
+const User = require('./models/User');
 const { Status, Category } = require('./frontend/src/constants/Enums');
+const bcrypt = require('bcryptjs');
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
@@ -25,6 +27,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var articles = [];
+var users = [];
 
 function articleCreate(title, description, status, isDeleted, category, cb) {
   var article = new Article({
@@ -44,6 +47,50 @@ function articleCreate(title, description, status, isDeleted, category, cb) {
     articles.push(article);
     cb(null, article);
   });
+}
+
+function userCreate(handle, email, password, cb) {
+  var newUser = new User({
+    handle,
+    email,
+    password
+  });
+
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(newUser.password, salt, (err, hash) => {
+      if (err) {
+        cb(err, null);
+        return;
+      }
+      newUser.password = hash;
+      newUser
+        .save()
+        .then(newUser => {
+          console.log('New user: ' + newUser);
+          users.push(newUser);
+          cb(null, newUser);
+        })
+        .catch(err => {
+          console.log(err);
+          cb(err, null);
+        });
+    });
+  });
+}
+
+function createUsers(cb) {
+  async.parallel(
+    [
+      function (callback) {
+        userCreate('bry', 'bry@gmail.com', '123123', callback);
+      },
+      function (callback) {
+        userCreate('john', 'john@gmail.com', '123123', callback);
+      }
+    ],
+    // optional callback
+    cb
+  );
 }
 
 function createArticles(cb) {
@@ -86,13 +133,14 @@ function createArticles(cb) {
 }
 
 async.series(
-  [createArticles],
+  [createArticles, createUsers],
   // Optional callback
   function (err, results) {
     if (err) {
       console.log('FINAL ERR: ' + err);
     } else {
       console.log('articles: ' + articles);
+      console.log('users: ' + users);
     }
     // All done, disconnect from database
     mongoose.connection.close();
