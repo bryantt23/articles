@@ -29,13 +29,22 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var articles = [];
 var users = [];
 
-function articleCreate(title, description, status, isDeleted, category, cb) {
+function articleCreate(
+  title,
+  description,
+  status,
+  isDeleted,
+  category,
+  author,
+  cb
+) {
   var article = new Article({
     title,
     description,
     status,
     isDeleted,
-    category
+    category,
+    author
   });
 
   article.save(function (err) {
@@ -45,7 +54,7 @@ function articleCreate(title, description, status, isDeleted, category, cb) {
     }
     console.log('New article: ' + article);
     articles.push(article);
-    cb(null, article);
+    // cb(null, article);
   });
 }
 
@@ -93,6 +102,26 @@ function createUsers(cb) {
   );
 }
 
+function getRandomFromArray(myArray) {
+  return myArray[Math.floor(Math.random() * myArray.length)];
+}
+
+function generateRandomArticles(cb) {
+  for (let i = 0; i < 10; i++) {
+    const author = i % 2 === 0 ? users[0] : users[1];
+    const isDeleted = i % 2 === 0 ? true : false;
+    articleCreate(
+      'Article number: ' + i,
+      'Article description: ' + i,
+      getRandomFromArray(Object.values(Status)),
+      isDeleted,
+      getRandomFromArray(Object.values(Category)),
+      author,
+      cb
+    );
+  }
+}
+
 function createArticles(cb) {
   async.parallel(
     [
@@ -133,14 +162,14 @@ function createArticles(cb) {
 }
 
 async.series(
-  [createArticles, createUsers],
+  [createUsers, generateRandomArticles],
   // Optional callback
   function (err, results) {
     if (err) {
       console.log('FINAL ERR: ' + err);
     } else {
-      console.log('articles: ' + articles);
       console.log('users: ' + users);
+      console.log('articles: ' + articles);
     }
     // All done, disconnect from database
     mongoose.connection.close();
