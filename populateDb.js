@@ -126,7 +126,6 @@ function doSomethingAsync(i) {
     comment.save(function (err) {
       if (err) {
         console.log('err', err);
-        // console.log('err', err);
         return;
       }
       console.log('New comment: ' + comment);
@@ -145,20 +144,9 @@ async function generateComments() {
   }
 
   return Promise.all(promises).then(results => {
-    console.log(`
-    
-    
-    
-    results
-    ${results}
-    
-    
-    `);
     comments = [...results];
-    // resolve(results);
     return Promise.resolve(comments);
   });
-  // return comments;
 }
 
 async function generateRandomArticles(cb) {
@@ -166,13 +154,6 @@ async function generateRandomArticles(cb) {
     const author = getRandomFromArray(users);
     const isDeleted = i % 2 === 0 ? true : false;
     let comments = await generateComments();
-    console.log(`
-    
-    comments in generateRandomArticles
-
-
-    ${comments}
-    `);
     articleCreate(
       'Article number: ' + i,
       'Article description: ' + i,
@@ -186,45 +167,6 @@ async function generateRandomArticles(cb) {
   }
 }
 
-function createArticles(cb) {
-  async.parallel(
-    [
-      function (callback) {
-        articleCreate(
-          'First article',
-          'First article description',
-          Status.PAST,
-          false,
-          Category.ACCOUNT_INFO,
-          callback
-        );
-      },
-      function (callback) {
-        articleCreate(
-          'Second article',
-          'Second article description. This article is very long, very long',
-          Status.PAST,
-          false,
-          Category.ACCOUNT_INFO,
-          callback
-        );
-      },
-      function (callback) {
-        articleCreate(
-          'Deleted article',
-          'Deleted article description',
-          Status.FUTURE,
-          true,
-          Category.REFUNDS,
-          callback
-        );
-      }
-    ],
-    // optional callback
-    cb
-  );
-}
-
 async.series(
   [createUsers, generateRandomArticles],
   // Optional callback
@@ -234,8 +176,8 @@ async.series(
     } else {
       console.log('users: ' + users);
       console.log('articles: ' + articles);
+      // All done, disconnect from database
+      mongoose.connection.close();
     }
-    // All done, disconnect from database
-    // mongoose.connection.close();
   }
 );
