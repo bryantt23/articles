@@ -87,4 +87,13 @@ router.post('/login', (req, res) => {
   });
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    return res.status(404).json(error);
+  }
+});
+
 module.exports = router;

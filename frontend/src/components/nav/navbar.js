@@ -25,6 +25,9 @@ class NavBar extends Component {
             <Link to={'/add-article'}>Add an Article</Link>
           </li>
           <li>
+            <Link to={'/users'}>Users</Link>
+          </li>
+          <li>
             <a onClick={this.logoutUser}>Logout</a>
           </li>
         </ul>

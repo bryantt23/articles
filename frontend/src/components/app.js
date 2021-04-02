@@ -12,6 +12,7 @@ import AddArticle from './article/AddArticle';
 import EditArticle from './article/EditArticle';
 
 import Notification from './notification/Notification';
+import Users from './user/Users';
 
 import { Switch } from 'react-router-dom';
 
@@ -34,6 +35,7 @@ function App() {
           path='/edit-article/:id'
           component={EditArticle}
         />
+        <ProtectedRoute exact path='/users' component={Users} />
       </Switch>
     </div>
   );
