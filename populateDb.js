@@ -16,6 +16,7 @@ if (!userArgs[0].startsWith('mongodb')) {
 var async = require('async');
 const Article = require('./models/Article');
 const User = require('./models/User');
+const Comment = require('./models/Comment');
 const { Status, Category } = require('./frontend/src/constants/Enums');
 const bcrypt = require('bcryptjs');
 
@@ -36,6 +37,7 @@ function articleCreate(
   isDeleted,
   category,
   author,
+  comments,
   cb
 ) {
   var article = new Article({
@@ -44,12 +46,14 @@ function articleCreate(
     status,
     isDeleted,
     category,
-    author
+    author,
+    comments
   });
 
   article.save(function (err) {
     if (err) {
-      cb(err, null);
+      console.log('err', err);
+      console.log('err', err);
       return;
     }
     console.log('New article: ' + article);
@@ -68,7 +72,7 @@ function userCreate(handle, email, password, cb) {
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
       if (err) {
-        cb(err, null);
+        console.log('err', err);
         return;
       }
       newUser.password = hash;
@@ -80,8 +84,8 @@ function userCreate(handle, email, password, cb) {
           cb(null, newUser);
         })
         .catch(err => {
-          console.log(err);
-          cb(err, null);
+          console.log('err', err);
+          console.log('err', err);
         });
     });
   });
@@ -95,6 +99,9 @@ function createUsers(cb) {
       },
       function (callback) {
         userCreate('john', 'john@gmail.com', '123123', callback);
+      },
+      function (callback) {
+        userCreate('jane', 'jane@gmail.com', '123123', callback);
       }
     ],
     // optional callback
@@ -102,14 +109,70 @@ function createUsers(cb) {
   );
 }
 
+function randomIntFromInterval(min, max) {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 function getRandomFromArray(myArray) {
   return myArray[Math.floor(Math.random() * myArray.length)];
 }
 
-function generateRandomArticles(cb) {
+function doSomethingAsync(i) {
+  return new Promise(resolve => {
+    const text = `text ${i}`;
+    const author = getRandomFromArray(users);
+    const comment = new Comment({ text, author });
+    comment.save(function (err) {
+      if (err) {
+        console.log('err', err);
+        // console.log('err', err);
+        return;
+      }
+      console.log('New comment: ' + comment);
+      resolve(comment);
+    });
+  });
+}
+
+async function generateComments() {
+  let length = randomIntFromInterval(0, 3);
+  let comments = [];
+  let promises = [];
+
+  for (let i = 0; i < length; i++) {
+    promises.push(doSomethingAsync(i));
+  }
+
+  return Promise.all(promises).then(results => {
+    console.log(`
+    
+    
+    
+    results
+    ${results}
+    
+    
+    `);
+    comments = [...results];
+    // resolve(results);
+    return Promise.resolve(comments);
+  });
+  // return comments;
+}
+
+async function generateRandomArticles(cb) {
   for (let i = 0; i < 10; i++) {
-    const author = i % 2 === 0 ? users[0] : users[1];
+    const author = getRandomFromArray(users);
     const isDeleted = i % 2 === 0 ? true : false;
+    let comments = await generateComments();
+    console.log(`
+    
+    comments in generateRandomArticles
+
+
+    ${comments}
+    `);
     articleCreate(
       'Article number: ' + i,
       'Article description: ' + i,
@@ -117,6 +180,7 @@ function generateRandomArticles(cb) {
       isDeleted,
       getRandomFromArray(Object.values(Category)),
       author,
+      comments,
       cb
     );
   }
@@ -172,6 +236,6 @@ async.series(
       console.log('articles: ' + articles);
     }
     // All done, disconnect from database
-    mongoose.connection.close();
+    // mongoose.connection.close();
   }
 );

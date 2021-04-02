@@ -38,6 +38,15 @@ const ArticleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  comments: {
+    type: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+      }
+    ],
+    required: true
   }
 });
 
