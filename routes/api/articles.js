@@ -11,9 +11,7 @@ router.get('/', async (req, res) => {
 
 function doSomethingAsync(comment) {
   return new Promise(resolve => {
-    console.log('comment yes', comment);
     User.find({ _id: comment.author }).then(user => {
-      console.log('user', user);
       comment.author = { handle: user[0].handle, email: user[0].email };
       resolve(comment);
     });
@@ -21,7 +19,6 @@ function doSomethingAsync(comment) {
 }
 
 async function getCommentsWithUserInfo(comments) {
-  let res = [];
   let promises = [];
 
   for (let comment of comments) {
@@ -29,35 +26,19 @@ async function getCommentsWithUserInfo(comments) {
   }
 
   return Promise.all(promises).then(results => {
-    res = [...results];
-    return Promise.resolve(res);
+    return Promise.resolve(...results);
   });
 }
 
 // https://stackoverflow.com/questions/14504385/why-cant-you-modify-the-data-returned-by-a-mongoose-query-ex-findbyid
 router.get('/:articleId', (req, res) => {
-  console.log('articleId', req.params);
   Article.find({ _id: req.params.articleId })
     .lean()
     .populate('comments', 'text author date')
-    .populate('User', 'handle date')
-    // .populate('author', 'handle date')
     .exec(async function (err, article) {
       let commentsWithUserInfo = await getCommentsWithUserInfo(
         article[0].comments
       );
-      console.log('commentsWithUserInfo', commentsWithUserInfo);
-      /*
-      for (let comment of article[0].comments) {
-        const { author } = comment;
-        console.log(author);
-        console.log(comment);
-        comment.blah = 'foo';
-        User.findById(author).then(info => {
-          console.log('info', info);
-          comment.authorInfo = info;
-        });
-      }*/
       article[0].comments = commentsWithUserInfo;
 
       if (err) {
