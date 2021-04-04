@@ -30,16 +30,25 @@ async function getCommentsWithUserInfo(comments) {
   });
 }
 
+// https://stackoverflow.com/questions/19222520/populate-nested-array-in-mongoose
 // https://stackoverflow.com/questions/14504385/why-cant-you-modify-the-data-returned-by-a-mongoose-query-ex-findbyid
 router.get('/:articleId', (req, res) => {
   Article.find({ _id: req.params.articleId })
     .lean()
-    .populate('comments', 'text author date')
+    .populate({
+      path: 'comments',
+      select: 'text',
+      populate: {
+        path: 'author',
+        model: 'users',
+        select: 'handle email'
+      }
+    })
     .exec(async function (err, article) {
-      let commentsWithUserInfo = await getCommentsWithUserInfo(
-        article[0].comments
-      );
-      article[0].comments = commentsWithUserInfo;
+      // let commentsWithUserInfo = await getCommentsWithUserInfo(
+      //   article[0].comments
+      // );
+      // article[0].comments = commentsWithUserInfo;
 
       if (err) {
         console.log(err);
