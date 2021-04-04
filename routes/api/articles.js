@@ -11,8 +11,15 @@ router.get('/', async (req, res) => {
 router.get('/:articleId', (req, res) => {
   console.log('articleId', req.params);
   Article.find({ _id: req.params.articleId })
-    .then(article => res.json(article))
-    .catch(err => res.status(400).json(err));
+    .populate('comments', 'text author date')
+    .exec(function (err, article) {
+      if (err) {
+        console.log(err);
+        res.status(400).json(err);
+      } else {
+        res.json(article);
+      }
+    });
 });
 
 router.post('/', (req, res) => {

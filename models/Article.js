@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { Category, Status } = require('../frontend/src/constants/Enums');
-const User = require('../models/User');
+const Comment = require('../models/Comment');
 
 // https://stackoverflow.com/questions/29299477/how-to-create-and-use-enum-in-mongoose
 const ArticleSchema = new Schema({

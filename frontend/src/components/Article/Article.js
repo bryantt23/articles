@@ -34,6 +34,9 @@ function Article() {
           <p>Status: {article.status}</p>
           <p>Category: {article.category}</p>
           <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
+
+          <p>Comments: {JSON.stringify(article.comments)}</p>
+
           <NavLink to={`/edit-article/${article._id}`} activeClassName='active'>
             Edit article
           </NavLink>
