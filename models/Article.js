@@ -50,6 +50,6 @@ const ArticleSchema = new Schema({
   }
 });
 
-const Article = mongoose.model('article', ArticleSchema);
+const Article = mongoose.model('Article', ArticleSchema);
 
 module.exports = Article;

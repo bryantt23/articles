@@ -40,7 +40,7 @@ router.get('/:articleId', (req, res) => {
       select: 'text',
       populate: {
         path: 'author',
-        model: 'users',
+        model: 'User',
         select: 'handle email'
       }
     })
