@@ -34,12 +34,11 @@ function Article() {
           <p>Status: {article.status}</p>
           <p>Category: {article.category}</p>
           <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
-
-          <Comments comments={article.comments} />
-
           <NavLink to={`/edit-article/${article._id}`} activeClassName='active'>
             Edit article
           </NavLink>
+
+          <Comments comments={article.comments} />
         </div>
       )}
     </div>
