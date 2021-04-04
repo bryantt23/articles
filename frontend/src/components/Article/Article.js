@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { NavLink } from 'react-router-dom';
 import { getArticle } from '../../util/article_api_util';
+import Comments from '../comment/Comments';
 
 function Article() {
   const [article, setArticle] = useState(null);
@@ -35,7 +35,7 @@ function Article() {
           <p>Category: {article.category}</p>
           <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
 
-          <p>Comments: {JSON.stringify(article.comments)}</p>
+          <Comments comments={article.comments} />
 
           <NavLink to={`/edit-article/${article._id}`} activeClassName='active'>
             Edit article
