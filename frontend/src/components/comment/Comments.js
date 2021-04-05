@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Comment from './Comment';
+import CommentForm from './CommentForm';
 
 function Comments({ comments }) {
+  const [addingComment, setAddingComment] = useState(false);
+
   return (
     <div>
       {comments.length ? (
@@ -15,6 +18,11 @@ function Comments({ comments }) {
         <div>
           <p>There are no comments for this article</p>
         </div>
+      )}
+      {addingComment ? (
+        <CommentForm setAddingComment={setAddingComment} />
+      ) : (
+        <button onClick={() => setAddingComment(true)}>Add a Comment</button>
       )}
     </div>
   );
