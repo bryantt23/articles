@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Article = require('../../models/Article');
 const User = require('../../models/User');
+const Comment = require('../../models/Comment');
 
 router.get('/', async (req, res) => {
   Article.find()
@@ -95,6 +96,45 @@ router.put('/:articleId', (req, res) => {
       res.send(article);
     });
   });
+});
+
+router.post('/:id/comments', async (request, response) => {
+  if (!request.params.id) {
+    return response.status(400).send({ message: 'Missing article id' });
+  }
+
+  try {
+    const articleId = request.params.id;
+    const commentText = request.body.comment;
+    const userId = request.body.userId;
+    console.log('commentText', commentText);
+    console.log('userId', userId);
+
+    const article = await Article.findOne({ _id: articleId });
+    let { comments } = article;
+
+    const comment = new Comment({ text: commentText, author: userId });
+    comments.push(comment);
+
+    comment.save(function (err) {
+      if (err) {
+        console.log('err', err);
+        return;
+      }
+      console.log('New comment: ' + comment);
+      article.save(function (err) {
+        if (err) {
+          console.log('err', err);
+          return;
+        }
+        console.log(
+          'Article with new comment added: ' + JSON.stringify(article)
+        );
+      });
+    });
+  } catch (error) {
+    console.log('err', err);
+  }
 });
 
 module.exports = router;

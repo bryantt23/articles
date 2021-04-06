@@ -38,7 +38,7 @@ function Article() {
             Edit article
           </NavLink>
 
-          <Comments comments={article.comments} />
+          <Comments comments={article.comments} articleId={article._id} />
         </div>
       )}
     </div>

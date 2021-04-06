@@ -40,3 +40,19 @@ export const editArticle = async ({
     isDeleted
   });
 };
+
+export const addComment = async (articleId, userId, comment) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ comment, userId })
+  };
+  // debugger;
+  const url = `${baseUrl}/${articleId}/comments`;
+  const response = await fetch(url, requestOptions);
+  const data = await response.json();
+
+  return data;
+};

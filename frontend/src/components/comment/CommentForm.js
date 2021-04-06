@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { addComment } from '../../util/article_api_util';
 
-function CommentForm({ setAddingComment }) {
-  const [text, setText] = useState('');
+function CommentForm({ setAddingComment, articleId, userId }) {
+  const [comment, setComment] = useState('');
 
-  const handleSubmit = e => {
+  console.log(articleId);
+  console.log(userId);
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log(text);
+    console.log(articleId, userId, comment);
+    await addComment(articleId, userId, comment);
   };
 
   return (
     <div>
       Comment Form
       <form onSubmit={handleSubmit}>
-        <input type='text' onChange={e => setText(e.target.value)} />
+        <input type='text' onChange={e => setComment(e.target.value)} />
         <input type='submit' value='Add Comment' />
         <button onClick={() => setAddingComment(false)}>Cancel</button>
       </form>
@@ -20,4 +25,12 @@ function CommentForm({ setAddingComment }) {
   );
 }
 
-export default CommentForm;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    userId: state.session.user.id
+  };
+};
+const ConnectedCommentForm = connect(mapStateToProps, null)(CommentForm);
+
+export default ConnectedCommentForm;
