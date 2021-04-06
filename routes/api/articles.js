@@ -116,22 +116,10 @@ router.post('/:id/comments', async (request, response) => {
     const comment = new Comment({ text: commentText, author: userId });
     comments.push(comment);
 
-    comment.save(function (err) {
-      if (err) {
-        console.log('err', err);
-        return;
-      }
-      console.log('New comment: ' + comment);
-      article.save(function (err) {
-        if (err) {
-          console.log('err', err);
-          return;
-        }
-        console.log(
-          'Article with new comment added: ' + JSON.stringify(article)
-        );
-      });
-    });
+    await comment.save();
+    console.log('New comment: ' + comment);
+    await article.save();
+    console.log('Article with new comment added: ' + JSON.stringify(article));
   } catch (error) {
     console.log('err', err);
   }
