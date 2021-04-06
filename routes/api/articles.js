@@ -120,8 +120,13 @@ router.post('/:id/comments', async (request, response) => {
     console.log('New comment: ' + comment);
     await article.save();
     console.log('Article with new comment added: ' + JSON.stringify(article));
+    return response.send({
+      message: `Updated article: ${article}, commments to ${comments}`
+    });
   } catch (error) {
-    console.log('err', err);
+    console.log('error', error);
+    console.log('error.message', error.message);
+    return response.status(400).json(error.message);
   }
 });
 

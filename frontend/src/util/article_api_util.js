@@ -52,7 +52,12 @@ export const addComment = async (articleId, userId, comment) => {
   // debugger;
   const url = `${baseUrl}/${articleId}/comments`;
   const response = await fetch(url, requestOptions);
+  console.log(response);
   const data = await response.json();
+  if (!response.ok) {
+    console.log(data);
+    throw Error(data);
+  }
 
   return data;
 };
