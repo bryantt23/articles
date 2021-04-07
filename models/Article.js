@@ -47,6 +47,14 @@ const ArticleSchema = new Schema({
       }
     ],
     required: true
+  },
+  labels: {
+    type: [
+      {
+        type: String
+      }
+    ],
+    required: true
   }
 });
 

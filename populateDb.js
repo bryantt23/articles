@@ -19,6 +19,7 @@ const User = require('./models/User');
 const Comment = require('./models/Comment');
 const { Status, Category } = require('./frontend/src/constants/Enums');
 const bcrypt = require('bcryptjs');
+const labels = require('./frontend/src/constants/Labels');
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
@@ -38,6 +39,7 @@ function articleCreate(
   category,
   author,
   comments,
+  labels,
   cb
 ) {
   var article = new Article({
@@ -47,7 +49,8 @@ function articleCreate(
     isDeleted,
     category,
     author,
-    comments
+    comments,
+    labels
   });
 
   article.save(function (err) {
@@ -149,11 +152,25 @@ async function generateComments() {
   });
 }
 
+// https://stackoverflow.com/questions/19269545/how-to-get-a-number-of-random-elements-from-an-array
+function getRandomLabels() {
+  let n = randomIntFromInterval(0, labels.length);
+
+  // Shuffle array
+  const shuffled = [...labels].sort(() => 0.5 - Math.random());
+
+  // Get sub-array of first n elements after shuffled
+  let selected = shuffled.slice(0, n);
+
+  return selected;
+}
+
 async function generateRandomArticles(cb) {
   for (let i = 0; i < 10; i++) {
     const author = getRandomFromArray(users);
     const isDeleted = i % 2 === 0 ? true : false;
     let comments = await generateComments();
+    let labels = getRandomLabels();
     articleCreate(
       'Article number: ' + i,
       'Article description: ' + i,
@@ -162,6 +179,7 @@ async function generateRandomArticles(cb) {
       getRandomFromArray(Object.values(Category)),
       author,
       comments,
+      labels,
       cb
     );
   }
