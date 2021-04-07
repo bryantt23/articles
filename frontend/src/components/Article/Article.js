@@ -26,25 +26,8 @@ function Article() {
     fetchData();
   }, []);
 
-  const setCheckbox = (index, isChecked) => {
-    if (isChecked) {
-      setSelectedLabels(new Set([...selectedLabels, labels[index]]));
-      console.log(selectedLabels);
-    } else {
-      const updatedLabels = [...selectedLabels].filter(
-        elem => elem !== labels[index]
-      );
-
-      // updatedLabels.splice(index, 1);
-      // debugger;
-      setSelectedLabels(new Set(updatedLabels));
-      console.log(selectedLabels);
-    }
-  };
-
   return (
     <div className='App'>
-      {selectedLabels}
       {!article ? (
         `There is no article with id ${id}`
       ) : (
@@ -55,19 +38,20 @@ function Article() {
           <p>Status: {article.status}</p>
           <p>Category: {article.category}</p>
           <p>Labels: {JSON.stringify(article.labels)}</p>
-          <p>
-            <p>Selected Labels:</p>
-            {labels.map((label, i) => (
-              <span>
-                <input
-                  type='checkbox'
-                  checked={selectedLabels.has(label)}
-                  onChange={e => setCheckbox(i, e.target.checked)}
-                ></input>
-                {label}
-              </span>
-            ))}
-          </p>
+          <div>
+            <p>
+              Selected Labels:
+              {labels.map((label, i) => (
+                <span style={{ opacity: 0.5 }}>
+                  <input
+                    type='checkbox'
+                    checked={selectedLabels.has(label)}
+                  ></input>
+                  {label}
+                </span>
+              ))}
+            </p>
+          </div>
           <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
           <NavLink to={`/edit-article/${article._id}`} activeClassName='active'>
             Edit article
