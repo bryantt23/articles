@@ -42,10 +42,11 @@ function Article() {
             <p>
               Selected Labels:
               {labels.map((label, i) => (
-                <span style={{ opacity: 0.5 }}>
+                <span key={i} style={{ opacity: 0.5 }}>
                   <input
                     type='checkbox'
                     checked={selectedLabels.has(label)}
+                    readOnly={true}
                   ></input>
                   {label}
                 </span>
