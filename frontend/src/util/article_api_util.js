@@ -30,6 +30,7 @@ export const editArticle = async ({
   status,
   description,
   isDeleted,
+  labels,
   id
 }) => {
   return axios.put(baseUrl + '/' + id, {
@@ -37,7 +38,8 @@ export const editArticle = async ({
     category,
     status,
     description,
-    isDeleted
+    isDeleted,
+    labels
   });
 };
 

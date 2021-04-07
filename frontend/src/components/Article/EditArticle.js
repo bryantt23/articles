@@ -7,6 +7,7 @@ import {
 } from '../../actions/notification_actions';
 import { connect } from 'react-redux';
 import { getArticle, editArticle } from '../../util/article_api_util';
+import labels from '../../constants/Labels';
 
 function EditArticle(props) {
   let { id } = useParams();
@@ -16,6 +17,7 @@ function EditArticle(props) {
   const [category, setCategory] = useState('');
   const [status, setStatus] = useState(null);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [selectedLabels, setSelectedLabels] = useState(new Set());
 
   useEffect(() => {
     async function fetchData() {
@@ -27,6 +29,8 @@ function EditArticle(props) {
         setCategory(category);
         setStatus(status);
         setIsDeleted(isDeleted);
+        setSelectedLabels(new Set(article.labels));
+        console.log(selectedLabels);
       } catch (error) {
         console.log(error);
       }
@@ -44,6 +48,7 @@ function EditArticle(props) {
         description,
         category,
         status,
+        labels: [...selectedLabels],
         isDeleted
       });
       await props.notificationArticle(
@@ -52,6 +57,7 @@ function EditArticle(props) {
         Description: ${description}, 
         Category: ${category},
         Status: ${status},
+        Selected Labels: ${[...selectedLabels]},
         isDeleted: ${isDeleted}`,
         10
       );
@@ -59,6 +65,20 @@ function EditArticle(props) {
     } catch (error) {
       console.log(error);
       props.notificationError(error.message + error.response.data, 10);
+    }
+  };
+
+  const setCheckbox = (index, isChecked) => {
+    if (isChecked) {
+      setSelectedLabels(new Set([...selectedLabels, labels[index]]));
+      console.log(selectedLabels);
+    } else {
+      const updatedLabels = [...selectedLabels].filter(
+        elem => elem !== labels[index]
+      );
+
+      setSelectedLabels(new Set(updatedLabels));
+      console.log(selectedLabels);
     }
   };
 
@@ -112,6 +132,20 @@ function EditArticle(props) {
                 </option>
               ))}
             </select>
+          </label>
+          <br />
+          <label>
+            Selected Labels:
+            {labels.map((label, i) => (
+              <span>
+                <input
+                  type='checkbox'
+                  checked={selectedLabels.has(label)}
+                  onChange={e => setCheckbox(i, e.target.checked)}
+                ></input>
+                {label} 
+              </span>
+            ))}
           </label>
           <br />
           <label>
