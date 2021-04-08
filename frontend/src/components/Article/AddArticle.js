@@ -33,15 +33,17 @@ function AddArticle(props) {
       );
       props.history.push('/');
     } catch (error) {
-      console.log('error', error.response);
-      props.notificationError(
-        error.message +
-          ', ' +
-          error.response.data.errors
-            .map(error => error.param + ': ' + error.msg)
-            .join(', '),
-        10
-      );
+      console.log(JSON.stringify(error.response.data.errors));
+      const errors = error.response.data.errors
+        .map(obj => {
+          let errors = [];
+          for (let key in obj) {
+            errors.push(key + ': ' + obj[key]);
+          }
+          return errors;
+        })
+        .join(', ');
+      props.notificationError(error.message + ', ' + errors, 10);
     }
   };
 

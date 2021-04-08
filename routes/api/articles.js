@@ -3,7 +3,10 @@ const router = express.Router();
 const Article = require('../../models/Article');
 const User = require('../../models/User');
 const Comment = require('../../models/Comment');
-const { body, validationResult } = require('express-validator');
+const {
+  articleValidationRules,
+  validate
+} = require('../../validation/validator');
 
 router.get('/', async (req, res) => {
   Article.find()
@@ -62,40 +65,22 @@ router.get('/:articleId', (req, res) => {
     });
 });
 
-router.post(
-  '/',
-  body('title')
-    .isLength({ min: 3 })
-    .withMessage('must be at least 3 chars long')
-    .isLength({ max: 10 })
-    .withMessage('must be less than 10 chars long'),
-  body('description')
-    .isLength({ min: 3 })
-    .withMessage('must be at least 3 chars long')
-    .isLength({ max: 100 })
-    .withMessage('must be less than 100 chars long'),
-  (req, res) => {
-    const errors = validationResult(req);
-    console.log('errors', errors);
-    if (!errors.isEmpty()) {
-      console.log('errors.array()', errors.array());
-      return res.status(404).json({ errors: errors.array() });
-    }
+router.post('/', articleValidationRules(), validate, (req, res) => {
+  console.log('errors', errors);
 
-    console.log('article', req.body);
+  console.log('article', req.body);
 
-    const newArticle = new Article({
-      ...req.body
+  const newArticle = new Article({
+    ...req.body
+  });
+
+  newArticle
+    .save()
+    .then(article => res.json(article))
+    .catch(e => {
+      return res.status(400).json(e.message);
     });
-
-    newArticle
-      .save()
-      .then(article => res.json(article))
-      .catch(e => {
-        return res.status(400).json(e.message);
-      });
-  }
-);
+});
 
 // https://coursework.vschool.io/mongoose-crud/
 router.put('/:articleId', (req, res) => {
