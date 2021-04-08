@@ -22,8 +22,18 @@ const validate = (req, res, next) => {
   let extractedErrors = [];
   console.log('errors.array()', errors.array());
   errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }));
+  const errorsStr = extractedErrors
+    .map(obj => {
+      let errors = [];
+      for (let key in obj) {
+        errors.push(key + ': ' + obj[key]);
+      }
+      return errors;
+    })
+    .join(', ');
+  console.log('errorsStr', errorsStr);
 
-  return res.status(422).json({ errors: extractedErrors });
+  return res.status(422).json({ errors: errorsStr });
 };
 
 module.exports = {

@@ -66,8 +66,6 @@ router.get('/:articleId', (req, res) => {
 });
 
 router.post('/', articleValidationRules(), validate, (req, res) => {
-  console.log('errors', errors);
-
   console.log('article', req.body);
 
   const newArticle = new Article({
@@ -78,7 +76,8 @@ router.post('/', articleValidationRules(), validate, (req, res) => {
     .save()
     .then(article => res.json(article))
     .catch(e => {
-      return res.status(400).json(e.message);
+      console.log('error', e);
+      return res.status(400).json({ errors: e.message });
     });
 });
 
