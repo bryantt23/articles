@@ -34,15 +34,6 @@ function AddArticle(props) {
       props.history.push('/');
     } catch (error) {
       console.log(JSON.stringify(error.response.data));
-      // const errors = error.response.data.errors
-      //   .map(obj => {
-      //     let errors = [];
-      //     for (let key in obj) {
-      //       errors.push(key + ': ' + obj[key]);
-      //     }
-      //     return errors;
-      //   })
-      //   .join(', ');
       props.notificationError(
         error.message + ', Message: ' + error.response.data.errors,
         10

@@ -19,17 +19,10 @@ const validate = (req, res, next) => {
   if (errors.isEmpty()) {
     return next();
   }
-  let extractedErrors = [];
   console.log('errors.array()', errors.array());
-  errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }));
-  const errorsStr = extractedErrors
-    .map(obj => {
-      let errors = [];
-      for (let key in obj) {
-        errors.push(key + ': ' + obj[key]);
-      }
-      return errors;
-    })
+  let errorsStr = errors
+    .array()
+    .map(err => `${err.param}: ${err.msg}`)
     .join(', ');
   console.log('errorsStr', errorsStr);
 
