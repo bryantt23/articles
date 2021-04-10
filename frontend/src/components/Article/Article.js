@@ -1,22 +1,37 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { getArticle } from '../../util/article_api_util';
 import Comments from '../comment/Comments';
 import labels from '../../constants/Labels';
 
-function Article() {
+function Article({ userId }) {
   const [article, setArticle] = useState(null);
   const [selectedLabels, setSelectedLabels] = useState(new Set());
   let { id } = useParams();
+  console.log('userId', userId);
+
+  const isArticleAuthor = () => {
+    if (article.author == userId) {
+      console.log(`  
+  match
+  `);
+    } else {
+      console.log('no match', article.author, userId);
+    }
+    return article.author === userId;
+  };
 
   useEffect(() => {
     console.log(id);
     async function fetchData() {
       try {
         const article = await getArticle(id);
-        console.log(article);
+        console.log('article', article);
         setArticle(article);
+        console.log('article', article);
+
         setSelectedLabels(new Set(article.labels));
         console.log(selectedLabels);
       } catch (error) {
@@ -54,9 +69,14 @@ function Article() {
             </p>
           </div>
           <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
-          <NavLink to={`/edit-article/${article._id}`} activeClassName='active'>
-            Edit article
-          </NavLink>
+          {isArticleAuthor() && (
+            <NavLink
+              to={`/edit-article/${article._id}`}
+              activeClassName='active'
+            >
+              Edit article
+            </NavLink>
+          )}
 
           <Comments comments={article.comments} articleId={article._id} />
         </div>
@@ -65,4 +85,12 @@ function Article() {
   );
 }
 
-export default Article;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    userId: state.session.user.id
+  };
+};
+const ConnectedArticle = connect(mapStateToProps, null)(Article);
+
+export default ConnectedArticle;
