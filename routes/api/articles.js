@@ -23,18 +23,6 @@ function doSomethingAsync(comment) {
   });
 }
 
-async function getCommentsWithUserInfo(comments) {
-  let promises = [];
-
-  for (let comment of comments) {
-    promises.push(doSomethingAsync(comment));
-  }
-
-  return Promise.all(promises).then(results => {
-    return Promise.resolve(...results);
-  });
-}
-
 // https://stackoverflow.com/questions/19222520/populate-nested-array-in-mongoose
 // https://stackoverflow.com/questions/14504385/why-cant-you-modify-the-data-returned-by-a-mongoose-query-ex-findbyid
 router.get('/:articleId', (req, res) => {
@@ -50,11 +38,6 @@ router.get('/:articleId', (req, res) => {
       }
     })
     .exec(async function (err, article) {
-      // let commentsWithUserInfo = await getCommentsWithUserInfo(
-      //   article[0].comments
-      // );
-      // article[0].comments = commentsWithUserInfo;
-
       if (err) {
         console.log(err);
         res.status(400).json(err);
