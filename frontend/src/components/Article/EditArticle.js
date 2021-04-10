@@ -64,7 +64,10 @@ function EditArticle(props) {
       props.history.push('/');
     } catch (error) {
       console.log(error);
-      props.notificationError(error.message + error.response.data, 10);
+      props.notificationError(
+        error.message + ', Message: ' + error.response.data.errors,
+        10
+      );
     }
   };
 

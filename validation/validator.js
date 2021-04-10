@@ -4,8 +4,8 @@ const articleValidationRules = () => {
     body('title')
       .isLength({ min: 3 })
       .withMessage('must be at least 3 chars long')
-      .isLength({ max: 10 })
-      .withMessage('must be less than 10 chars long'),
+      .isLength({ max: 21 })
+      .withMessage('must be less than 21 chars long'),
     body('description')
       .isLength({ min: 3 })
       .withMessage('must be at least 3 chars long')

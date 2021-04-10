@@ -82,9 +82,13 @@ router.post('/', articleValidationRules(), validate, (req, res) => {
 });
 
 // https://coursework.vschool.io/mongoose-crud/
-router.put('/:articleId', (req, res) => {
+router.put('/:articleId', articleValidationRules(), validate, (req, res) => {
   console.log('articleId', req.params, 'body', req.body);
   Article.findOne({ _id: req.params.articleId }, (err, article) => {
+    if (err) {
+      return res.status(400).json({ errors: error.message });
+    }
+
     console.log('article', article);
     console.log('req.body', req.body);
 
