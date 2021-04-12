@@ -5,23 +5,13 @@ import { NavLink } from 'react-router-dom';
 import { getArticle } from '../../util/article_api_util';
 import Comments from '../comment/Comments';
 import labels from '../../constants/Labels';
+import { isArticleAuthor } from '../../util/article_util';
 
 function Article({ userId }) {
   const [article, setArticle] = useState(null);
   const [selectedLabels, setSelectedLabels] = useState(new Set());
   let { id } = useParams();
   console.log('userId', userId);
-
-  const isArticleAuthor = () => {
-    if (article.author == userId) {
-      console.log(`  
-  match
-  `);
-    } else {
-      console.log('no match', article.author, userId);
-    }
-    return article.author === userId;
-  };
 
   useEffect(() => {
     console.log(id);
@@ -69,7 +59,7 @@ function Article({ userId }) {
             </p>
           </div>
           <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
-          {isArticleAuthor() && (
+          {isArticleAuthor(userId, article.author) && (
             <NavLink
               to={`/edit-article/${article._id}`}
               activeClassName='active'
