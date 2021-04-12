@@ -152,7 +152,7 @@ function EditArticle(props) {
           <label>
             Selected Labels:
             {labels.map((label, i) => (
-              <span>
+              <span key={i}>
                 <input
                   type='checkbox'
                   checked={selectedLabels.has(label)}
