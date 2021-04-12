@@ -8,9 +8,11 @@ import {
 import { connect } from 'react-redux';
 import { getArticle, editArticle } from '../../util/article_api_util';
 import labels from '../../constants/Labels';
+import { isArticleAuthor } from '../../util/article_util';
 
 function EditArticle(props) {
   let { id } = useParams();
+  const { userId } = props;
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -18,6 +20,7 @@ function EditArticle(props) {
   const [status, setStatus] = useState(null);
   const [isDeleted, setIsDeleted] = useState(false);
   const [selectedLabels, setSelectedLabels] = useState(new Set());
+  const [userIsArticleAuthor, setUserIsArticleAuthor] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -30,6 +33,10 @@ function EditArticle(props) {
         setStatus(status);
         setIsDeleted(isDeleted);
         setSelectedLabels(new Set(article.labels));
+        if (isArticleAuthor(userId, article.author)) {
+          setUserIsArticleAuthor(true);
+        }
+
         console.log(selectedLabels);
       } catch (error) {
         console.log(error);
@@ -85,6 +92,11 @@ function EditArticle(props) {
     }
   };
 
+  if (!userIsArticleAuthor) {
+    return (
+      <div>You cannot edit because you are not the author of this article</div>
+    );
+  }
   return (
     <div className='App'>
       <h1>Edit Article</h1>
@@ -170,8 +182,17 @@ function EditArticle(props) {
   );
 }
 
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    userId: state.session.user.id
+  };
+};
 const mapDispatchToProps = { notificationArticle, notificationError };
 
-const ConnectedEditArticle = connect(null, mapDispatchToProps)(EditArticle);
+const ConnectedEditArticle = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditArticle);
 
 export default ConnectedEditArticle;
