@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ArticlePreview from './ArticlePreview';
-import { connect } from 'react-redux';
-import { fetchArticles } from '../../actions/article_actions';
 import { Category, Status } from '../../constants/Enums';
 
 function Articles(props) {
@@ -10,12 +8,8 @@ function Articles(props) {
   const [selectedStatus, setSelectedStatus] = useState('Any');
 
   useEffect(() => {
-    async function fetchData() {
-      const data = await props.fetchArticles();
-      setArticles(data.articles);
-    }
-    fetchData();
-  }, []);
+    setArticles(props.data);
+  }, [articles]);
 
   const createDropdown = (arr, onChangeFunction) => {
     let arrUpdated = Object.values(arr).map(val => val);
@@ -61,17 +55,4 @@ function Articles(props) {
   );
 }
 
-const mapStateToProps = state => {
-  console.log(state);
-  return {
-    articles: Object.values(state.articles)
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchArticles: () => dispatch(fetchArticles())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Articles);
+export default Articles;

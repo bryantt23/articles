@@ -7,6 +7,7 @@ import LoginFormContainer from './session/login_form_container';
 import SignupFormContainer from './session/signup_form_container';
 
 import Articles from './article/Articles';
+import ArticlesContainer from './article/ArticlesContainer';
 import Article from './article/Article';
 import AddArticle from './article/AddArticle';
 import EditArticle from './article/EditArticle';
@@ -28,7 +29,7 @@ function App() {
         <AuthRoute exact path='/signup' component={SignupFormContainer} />
 
         <ProtectedRoute exact path='/articles/:id' component={Article} />
-        <ProtectedRoute exact path='/articles' component={Articles} />
+        <ProtectedRoute exact path='/articles' component={ArticlesContainer} />
         <ProtectedRoute exact path='/add-article' component={AddArticle} />
         <ProtectedRoute
           exact
