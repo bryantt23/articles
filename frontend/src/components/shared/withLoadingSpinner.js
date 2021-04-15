@@ -1,14 +1,11 @@
 import React from 'react';
+import './loading.css';
+
 function withLoadingSpinner(WrappedComponent) {
   return class extends React.Component {
     render() {
       if (!this.props.data) {
-        return (
-          <div>
-            This is the spinner
-            https://blog.jakoblind.no/real-world-higher-order-components-hocs/
-          </div>
-        );
+        return <div class='loader'></div>;
       } else {
         return <WrappedComponent {...this.props} />;
       }
