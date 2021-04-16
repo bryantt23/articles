@@ -46,6 +46,8 @@ function Articles(props) {
       <p>Show only articles with Status:</p>
       {createDropdown(Status, setSelectedStatus)}
 
+      <p>Articles Count: {articlesFiltered.length}</p>
+
       {articlesFiltered.length === 0
         ? 'There are no articles'
         : articlesFiltered.map(article => (
