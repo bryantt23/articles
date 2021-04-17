@@ -7,6 +7,12 @@ export const getArticles = async () => {
   return body;
 };
 
+export const getArticlesByUser = async userId => {
+  const response = await fetch(`${baseUrl}/author/${userId}`);
+  const body = await response.json();
+  return body;
+};
+
 export const getArticle = async id => {
   const response = await axios.get(baseUrl + '/' + id);
   console.log(response);

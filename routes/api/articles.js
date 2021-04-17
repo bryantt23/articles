@@ -10,7 +10,9 @@ const {
 
 router.get('/', async (req, res) => {
   Article.find()
-    .then(articles => res.json(articles))
+    .then(articles => {
+      setTimeout(() => res.json(articles), 3000);
+    })
     .catch(err => res.status(400).json(err));
 });
 
@@ -121,6 +123,29 @@ router.post('/:id/comments', async (request, response) => {
     console.log('error.message', error.message);
     return response.status(400).json(error.message);
   }
+});
+
+router.get('/author/:userId', (req, res) => {
+  Article.find({ author: req.params.userId })
+    .lean()
+    .populate({
+      path: 'comments',
+      select: 'text',
+      populate: {
+        path: 'author',
+        model: 'User',
+        select: 'handle email'
+      }
+    })
+    .exec(async function (err, article) {
+      if (err) {
+        console.log(err);
+        res.status(400).json(err);
+      } else {
+        console.log('article', article);
+        res.json(article);
+      }
+    });
 });
 
 module.exports = router;
