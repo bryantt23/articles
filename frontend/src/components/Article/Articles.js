@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ArticlePreview from './ArticlePreview';
+import ArticlePreviewContainer from './ArticlePreviewContainer';
 import { Category, Status } from '../../constants/Enums';
 
 function Articles(props) {
@@ -39,20 +39,12 @@ function Articles(props) {
   return (
     <div className='App'>
       <h1>Articles</h1>
-
       <p>Show only articles with Category:</p>
       {createDropdown(Category, setSelectedCategory)}
-
       <p>Show only articles with Status:</p>
       {createDropdown(Status, setSelectedStatus)}
-
       <p>Articles Count: {articlesFiltered.length}</p>
-
-      {articlesFiltered.length === 0
-        ? 'There are no articles'
-        : articlesFiltered.map(article => (
-            <ArticlePreview key={article._id} article={article} />
-          ))}
+      <ArticlePreviewContainer articles={articlesFiltered} />
     </div>
   );
 }
