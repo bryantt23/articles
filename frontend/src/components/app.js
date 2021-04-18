@@ -6,14 +6,13 @@ import MainPage from './main/main_page';
 import LoginFormContainer from './session/login_form_container';
 import SignupFormContainer from './session/signup_form_container';
 
-import Articles from './article/Articles';
 import ArticlesContainer from './article/ArticlesContainer';
 import Article from './article/Article';
 import AddArticle from './article/AddArticle';
 import EditArticle from './article/EditArticle';
 
 import Notification from './notification/Notification';
-import Users from './user/Users';
+import UsersContainer from './user/UsersContainer';
 
 import { Switch } from 'react-router-dom';
 
@@ -36,7 +35,7 @@ function App() {
           path='/edit-article/:id'
           component={EditArticle}
         />
-        <ProtectedRoute exact path='/users' component={Users} />
+        <ProtectedRoute exact path='/users' component={UsersContainer} />
       </Switch>
     </div>
   );

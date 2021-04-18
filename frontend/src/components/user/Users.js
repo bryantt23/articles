@@ -1,31 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers } from '../../util/users_api_util';
-import { getArticlesByUser } from '../../util/article_api_util';
 import User from '../user/User';
 import ArticlePreviewMini from '../article/ArticlePreviewMini';
 
-function Users() {
-  const [users, setUsers] = useState(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const usersFromApi = await getUsers();
-        for (const user of usersFromApi) {
-          console.log(user);
-          const articles = await getArticlesByUser(user._id);
-          user.articles = articles;
-          console.log(articles);
-        }
-        console.log(usersFromApi);
-        setUsers(usersFromApi);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-  }, []);
-
+function Users(props) {
+  const users = props.data;
   return (
     <div>
       {!users ? (
