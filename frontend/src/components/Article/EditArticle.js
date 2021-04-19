@@ -5,6 +5,10 @@ import {
   notificationArticle,
   notificationError
 } from '../../actions/notification_actions';
+import {
+  toastNotificationSuccess,
+  toastNotificationError
+} from '../../util/toast_notification';
 import { connect } from 'react-redux';
 import { getArticle, editArticle } from '../../util/article_api_util';
 import labels from '../../constants/Labels';
@@ -68,12 +72,24 @@ function EditArticle(props) {
         isDeleted: ${isDeleted}`,
         10
       );
+      toastNotificationSuccess(
+        `You updated the article to:
+        Title: ${title}, 
+        Description: ${description}, 
+        Category: ${category},
+        Status: ${status},
+        Selected Labels: ${[...selectedLabels]},
+        isDeleted: ${isDeleted}`
+      );
       props.history.push('/');
     } catch (error) {
       console.log(error);
       props.notificationError(
         error.message + ', Message: ' + error.response.data.errors,
         10
+      );
+      toastNotificationError(
+        error.message + ', Message: ' + error.response.data.errors
       );
     }
   };
