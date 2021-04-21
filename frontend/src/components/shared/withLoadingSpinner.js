@@ -5,7 +5,7 @@ function withLoadingSpinner(WrappedComponent) {
   return class extends React.Component {
     render() {
       if (!this.props.data) {
-        return <div class='loader'></div>;
+        return <div className='loader'></div>;
       } else {
         return <WrappedComponent {...this.props} />;
       }

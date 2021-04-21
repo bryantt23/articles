@@ -17,7 +17,7 @@ function Articles(props) {
     return (
       <select onChange={e => onChangeFunction(e.target.value)}>
         {arrUpdated.map(key => {
-          return <option>{key}</option>;
+          return <option key={key}>{key}</option>;
         })}
       </select>
     );
