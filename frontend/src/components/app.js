@@ -13,11 +13,16 @@ import EditArticle from './article/EditArticle';
 
 import Notification from './notification/Notification';
 import UsersContainer from './user/UsersContainer';
+import Authorization from './user/Authorization';
+
 import Admin from './user/Admin';
 
 import { Switch } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const AdminContainer = Authorization(['admin']);
+const AdminComponent = AdminContainer(Admin);
 
 function App() {
   return (
@@ -42,7 +47,7 @@ function App() {
 
         <ProtectedRoute exact path='/users' component={UsersContainer} />
 
-        <ProtectedRoute exact path='/admin' component={Admin} />
+        <ProtectedRoute exact path='/admin' component={AdminComponent} />
       </Switch>
     </div>
   );
