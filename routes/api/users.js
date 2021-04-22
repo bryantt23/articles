@@ -71,34 +71,36 @@ router.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  User.findOne({ email }).then(user => {
-    if (!user) {
-      // Use the validations to send the error
-      errors.email = 'User not found';
-      return res.status(404).json(errors);
-    }
-
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        const payload = { id: user.id, handle: user.handle };
-
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          // Tell the key to expire in one hour
-          // { expiresIn: 3600 },
-          (err, token) => {
-            res.json({
-              success: true,
-              token: 'Bearer ' + token
-            });
-          }
-        );
-      } else {
-        return res.status(400).json({ password: 'Incorrect password' });
+  User.findOne({ email })
+    .lean()
+    .then(user => {
+      if (!user) {
+        // Use the validations to send the error
+        errors.email = 'User not found';
+        return res.status(404).json(errors);
       }
+
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (isMatch) {
+          const roles = user.roles === undefined ? [] : user.roles;
+          const payload = { id: user.id, handle: user.handle, roles };
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            // Tell the key to expire in one hour
+            // { expiresIn: 3600 },
+            (err, token) => {
+              res.json({
+                success: true,
+                token: 'Bearer ' + token
+              });
+            }
+          );
+        } else {
+          return res.status(400).json({ password: 'Incorrect password' });
+        }
+      });
     });
-  });
 });
 
 router.get('/', async (req, res) => {

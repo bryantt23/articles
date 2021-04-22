@@ -13,6 +13,7 @@ import EditArticle from './article/EditArticle';
 
 import Notification from './notification/Notification';
 import UsersContainer from './user/UsersContainer';
+import Admin from './user/Admin';
 
 import { Switch } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -38,7 +39,10 @@ function App() {
           path='/edit-article/:id'
           component={EditArticle}
         />
+
         <ProtectedRoute exact path='/users' component={UsersContainer} />
+
+        <ProtectedRoute exact path='/admin' component={Admin} />
       </Switch>
     </div>
   );
