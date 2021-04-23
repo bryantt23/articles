@@ -11,6 +11,7 @@ import useFetch from '../shared/useFetch';
 function Article({ userId }) {
   let { id } = useParams();
   const { response, error, loader } = useFetch(() => getArticle(id));
+  console.log(response, error);
   const [article, setArticle] = useState(response);
   const [selectedLabels, setSelectedLabels] = useState(new Set());
 
@@ -18,14 +19,19 @@ function Article({ userId }) {
     setArticle(response);
   }, [response]);
 
+  useEffect(() => {
+    setArticle(error);
+  }, [error]);
+
   return (
     <div className='App'>
-      {article.length === 0 ? (
+      {error ? (
+        <p>{JSON.stringify(error)}</p>
+      ) : !article || article.length === 0 ? (
         loader
-      ) : !article.data ? (
-        `There is no article with id ${id}`
       ) : (
         <div>
+          {JSON.stringify(article)}
           <h1>Article</h1>
           <p>Title: {article.data.title}</p>
           <p>Description: {article.data.description}</p>
@@ -66,49 +72,7 @@ function Article({ userId }) {
     </div>
   );
 }
-/*
 
-      {!article ? (
-        `There is no article with id ${id}`
-      ) : (
-        <div>
-          <h1>Article</h1>
-          <p>Title: {article.title}</p>
-          <p>Description: {article.description}</p>
-          <p>Status: {article.status}</p>
-          <p>Category: {article.category}</p>
-          <p>Labels: {JSON.stringify(article.labels)}</p>
-          <div>
-            <p>
-              Selected Labels:
-              {labels.map((label, i) => (
-                <span key={i} style={{ opacity: 0.5 }}>
-                  <input
-                    type='checkbox'
-                    checked={selectedLabels.has(label)}
-                    readOnly={true}
-                  ></input>
-                  {label}
-                </span>
-              ))}
-            </p>
-          </div>
-          <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
-          {isArticleAuthor(userId, article.author) && (
-            <NavLink
-              to={`/edit-article/${article._id}`}
-              activeClassName='active'
-            >
-              Edit article
-            </NavLink>
-          )}
-
-          <Comments comments={article.comments} articleId={article._id} />
-        </div>
-      )}
-    
-
-*/
 const mapStateToProps = state => {
   console.log(state);
   return {

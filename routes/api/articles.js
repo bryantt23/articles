@@ -44,8 +44,11 @@ router.get('/:articleId', (req, res) => {
         console.log(err);
         res.status(400).json(err);
       } else {
+        if (!article.length) {
+          return res.status(400).send('Article Not Found');
+        }
         console.log('article', article);
-        res.json(article);
+        setTimeout(() => res.json(article), 2000);
       }
     });
 });
