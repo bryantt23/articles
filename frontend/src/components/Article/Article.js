@@ -16,7 +16,7 @@ function Article({ userId }) {
   const [selectedLabels, setSelectedLabels] = useState(new Set());
 
   useEffect(() => {
-    setArticle(response);
+    setArticle(response.data);
   }, [response]);
 
   useEffect(() => {
@@ -31,13 +31,12 @@ function Article({ userId }) {
         loader
       ) : (
         <div>
-          {JSON.stringify(article)}
           <h1>Article</h1>
-          <p>Title: {article.data.title}</p>
-          <p>Description: {article.data.description}</p>
-          <p>Status: {article.data.status}</p>
-          <p>Category: {article.data.category}</p>
-          <p>Labels: {JSON.stringify(article.data.labels)}</p>
+          <p>Title: {article.title}</p>
+          <p>Description: {article.description}</p>
+          <p>Status: {article.status}</p>
+          <p>Category: {article.category}</p>
+          <p>Labels: {JSON.stringify(article.labels)}</p>
           <div>
             <p>
               Selected Labels:
@@ -53,20 +52,17 @@ function Article({ userId }) {
               ))}
             </p>
           </div>
-          <p>Is Deleted?: {article.data.isDeleted ? 'Yes' : 'No'}</p>
-          {isArticleAuthor(userId, article.data.author) && (
+          <p>Is Deleted?: {article.isDeleted ? 'Yes' : 'No'}</p>
+          {isArticleAuthor(userId, article.author) && (
             <NavLink
-              to={`/edit-article/${article.data._id}`}
+              to={`/edit-article/${article._id}`}
               activeClassName='active'
             >
               Edit article
             </NavLink>
           )}
 
-          <Comments
-            comments={article.data.comments}
-            articleId={article.data._id}
-          />
+          <Comments comments={article.comments} articleId={article._id} />
         </div>
       )}
     </div>
