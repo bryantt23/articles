@@ -10,43 +10,16 @@ import useFetch from '../shared/useFetch';
 
 function Article({ userId }) {
   let { id } = useParams();
-  // const res = useFetch(() => getArticle(id).response);
   const { response, error, loader } = useFetch(() => getArticle(id));
-  console.log('response', response);
-  console.log('loader', loader);
-  // console.log(typeof response);
   const [article, setArticle] = useState(response);
-  console.log(article);
+  const [selectedLabels, setSelectedLabels] = useState(new Set());
+
   useEffect(() => {
-    console.log(typeof response);
     setArticle(response);
   }, [response]);
-  const [selectedLabels, setSelectedLabels] = useState(new Set());
-  console.log('userId', userId);
 
-  console.log(article);
-  /*
-  useEffect(() => {
-    console.log(id);
-    async function fetchData() {
-      try {
-        const article = await getArticle(id);
-        console.log('article', article);
-        setArticle(article);
-        console.log('article', article);
-
-        setSelectedLabels(new Set(article.labels));
-        console.log(selectedLabels);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-  }, []);
-*/
   return (
     <div className='App'>
-      {JSON.stringify(article)}
       {article.length === 0 ? (
         loader
       ) : !article.data ? (
