@@ -6,12 +6,9 @@ class SignupForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      handle: '',
-      password: '',
-      password2: '',
       errors: {}
     };
-    this.handleSumbit = this.handleSumbit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.clearedErrors = false;
   }
 
@@ -26,12 +23,13 @@ class SignupForm extends Component {
     return e => this.setState({ [type]: e.currentTarget.value });
   }
 
-  handleSumbit({ email }) {
+  handleSubmit({ email, handle, password, password2 }) {
+    console.log(arguments);
     let user = {
       email,
-      handle: this.state.handle,
-      password: this.state.password,
-      password2: this.state.password2
+      handle,
+      password,
+      password2
     };
     console.log(user);
     this.props.signup(user, this.props.history);
@@ -51,7 +49,12 @@ class SignupForm extends Component {
     return (
       <div>
         <Formik
-          initialValues={{ email: '' }}
+          initialValues={{
+            email: '',
+            handle: '',
+            password: '',
+            password2: ''
+          }}
           validate={values => {
             const errors = {};
             if (!values.email) {
@@ -61,11 +64,32 @@ class SignupForm extends Component {
             ) {
               errors.email = 'Invalid email address';
             }
+
+            if (!values.handle) {
+              errors.handle = 'Required';
+            } else if (values.handle.length < 2 || values.handle.length > 30) {
+              errors.handle = 'Handle must be between 2 and 30 characters';
+            }
+
+            if (!values.password) {
+              errors.password = 'Required';
+            } else if (
+              values.password.length < 6 ||
+              values.password.length > 30
+            ) {
+              errors.password = 'Password must be between 6 and 30 characters';
+            }
+
+            if (values.password2 !== values.password) {
+              errors.password2 = 'Passwords must match';
+            }
+
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
+            console.log(values);
             setTimeout(() => {
-              this.handleSumbit(values);
+              this.handleSubmit(values);
               setSubmitting(false);
             }, 400);
           }}
@@ -93,24 +117,31 @@ class SignupForm extends Component {
                 <br />
                 <input
                   type='text'
-                  value={this.state.handle}
-                  onChange={this.update('handle')}
+                  name='handle'
+                  value={values.handle}
+                  onChange={handleChange}
                   placeholder='Handle'
                 />
+                {errors.handle ? <div>{errors.handle}</div> : null}
                 <br />
                 <input
                   type='password'
-                  value={this.state.password}
-                  onChange={this.update('password')}
+                  name='password'
+                  value={values.password}
+                  onChange={handleChange}
                   placeholder='Password'
                 />
+                {errors.password ? <div>{errors.password}</div> : null}
                 <br />
                 <input
                   type='password'
-                  value={this.state.password2}
-                  onChange={this.update('password2')}
+                  name='password2'
+                  value={values.password2}
+                  onChange={handleChange}
+                  placeholder='Password'
                   placeholder='Confirm Password'
                 />
+                {errors.password2 ? <div>{errors.password2}</div> : null}
                 <br />
                 {this.renderErrors()}
                 {errors.password && touched.password && errors.password}
